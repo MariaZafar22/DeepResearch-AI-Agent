@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DeepResearch AI Agent</title>
+<style>
+:root{color-scheme:dark;--bg:#0a0e1f;--panel:#0f1429;--panel2:#131a35;--bd:#1f2850;--tx:#e8ebf7;--mut:#8b94b8;--pri:#7c4dff;--pri2:#9b7bff;--ok:#2ecc71;--blue:#4c8dff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,select,input{font:inherit;color:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--bd)}
+.logo{display:flex;gap:12px;align-items:center}.logo i{width:42px;height:42px;border-radius:10px;background:#1b2250;display:grid;place-items:center;font-style:normal;font-size:22px}
+.logo b{font-size:20px}.logo b span{color:var(--pri2)}.logo small{display:block;color:var(--mut)}
+.pill{padding:6px 12px;border-radius:20px;background:var(--panel2);display:flex;gap:6px;align-items:center;font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}.dot.off{background:#e74c3c}
+.av{width:36px;height:36px;border-radius:50%;background:var(--pri);display:grid;place-items:center;font-weight:600}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 67px)}
+.side{border-right:1px solid var(--bd);padding:16px 12px}
+.nav{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:10px;cursor:pointer;color:var(--mut);margin-bottom:6px}
+.nav.on{background:#241d55;color:#fff;border:1px solid #3a2f8a}.nav:hover{color:#fff}
+.tips{margin-top:28px;border:1px solid var(--bd);border-radius:12px;padding:14px;font-size:12px;color:#c4c9e2}
+.tips b{display:block;margin-bottom:8px;font-size:13px}.tips p{margin:6px 0}
+.main{padding:16px 20px;min-width:0}
+.bar{display:grid;grid-template-columns:1fr 200px 200px 170px;gap:12px;background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:16px}
+.bar input,.bar select{width:100%;height:50px;background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:0 14px;outline:none}
+.bar input:focus,.bar select:focus{border-color:var(--pri)}
+.lab{font-size:11px;color:var(--mut);display:block;margin-bottom:2px}
+.fld select{height:50px}
+.go{height:50px;align-self:end;border:0;border-radius:10px;background:linear-gradient(135deg,#7c4dff,#9b5cff);font-weight:600;cursor:pointer;font-size:15px}
+.go:disabled{opacity:.5;cursor:wait}
+.cols{display:grid;grid-template-columns:1fr 380px;gap:16px}
+.card{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:16px;min-width:0}
+.card h3{margin:0;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+.card .sub{color:var(--mut);font-size:12px;margin:2px 0 12px}
+.steps{display:flex;justify-content:space-between;margin:14px 8px 18px;position:relative}
+.step{text-align:center;flex:1;position:relative;font-size:12px}
+.step:not(:last-child)::after{content:"";position:absolute;top:17px;left:50%;width:100%;height:2px;background:var(--bd)}
+.step.done:not(:last-child)::after{background:var(--pri)}
+.step .n{width:36px;height:36px;border-radius:50%;background:var(--panel2);border:2px solid var(--bd);display:grid;place-items:center;margin:0 auto 8px;position:relative;z-index:1;font-weight:600}
+.step.done .n{background:var(--pri);border-color:var(--pri)}.step.run .n{border-color:var(--pri2);box-shadow:0 0 0 4px #7c4dff44;background:#2a2070}
+.step em{display:block;font-style:normal;color:var(--mut);font-size:11px}.step.done em{color:var(--ok)}.step.run em{color:var(--pri2)}
+.prog{height:6px;background:var(--panel2);border-radius:4px;overflow:hidden;margin:6px 0}.prog div{height:100%;width:0;background:linear-gradient(90deg,#7c4dff,#9b7bff);transition:width .4s}
+.src{display:flex;align-items:center;gap:12px;padding:10px 4px;border-top:1px solid var(--bd);cursor:pointer}
+.src:first-child{border-top:0}
+.ic{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-weight:700;flex:none;color:#fff}
+.src .t{flex:1;min-width:0}.src .t b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+
+.src .t a{color:var(--blue);font-size:12px;text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cols>div{min-width:0}
+.st{font-size:12px;display:flex;gap:6px;align-items:center;white-space:nowrap}.st.ok{color:var(--ok)}.st.pr{color:var(--pri2)}.st.pe{color:var(--mut)}
+.note{display:none;padding:0 4px 10px 46px;font-size:12px;color:#c4c9e2}.note.open{display:block}
+.log{max-height:330px;overflow:auto}.log div{display:flex;gap:10px;padding:5px 0;font-size:13px}.log time{color:var(--mut);flex:none}.log div:last-child{color:var(--pri2)}
+.badge{font-size:11px;padding:4px 10px;border-radius:20px;background:#1f2c66;color:var(--blue);font-weight:400}
+.rep{display:flex;gap:16px;background:var(--panel2);border-radius:12px;padding:16px}
+.rep .doc{font-size:40px}.rep h4{margin:0 0 4px;font-size:18px}.rep .meta{color:var(--mut);font-size:12px;margin-bottom:10px}
+.rep p{margin:0 0 10px;color:#c4c9e2;white-space:pre-wrap}
+.btns{display:flex;gap:8px;flex-wrap:wrap}.btn{background:transparent;border:1px solid #3a2f8a;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px}.btn:hover{background:#241d55}
+.btn.f{background:var(--pri);border-color:var(--pri);border-radius:20px;padding:7px 16px}
+.hist{display:flex;gap:12px;align-items:center;padding:9px 0;cursor:pointer;border-top:1px solid var(--bd)}.hist:first-of-type{border-top:0}
+.hist .ic{background:#2a2070}.hist small{color:var(--mut);display:block}
+.empty{color:var(--mut);padding:12px 0;font-size:13px}
+.modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:50;padding:24px}.modal.open{display:flex}
+.mbox{background:var(--panel);border:1px solid var(--bd);border-radius:14px;width:min(900px,100%);max-height:88vh;display:flex;flex-direction:column}
+.mhead{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--bd);gap:8px;flex-wrap:wrap}
+.mbody{padding:18px 24px;overflow:auto;line-height:1.65}.mbody h2{margin-top:0}.mbody h3{color:var(--pri2)}.mbody li{margin-left:18px}
+.hide{display:none!important}
+.sbox label{display:block;margin:14px 0 4px;color:var(--mut)}.sbox select{background:var(--panel2);border:1px solid var(--bd);border-radius:8px;padding:10px;width:260px}
+@media(max-width:1100px){.cols{grid-template-columns:1fr}.bar{grid-template-columns:1fr 1fr}.bar>.fld:first-child{grid-column:1/-1}}
+@media(max-width:760px){.app{grid-template-columns:1fr}.side{display:none}.steps{overflow-x:auto;gap:14px}.step{min-width:80px}.bar{grid-template-columns:1fr}}
+@media print{body *{visibility:hidden}#mbody,#mbody *{visibility:visible}#modal{position:absolute;inset:0;display:block;background:#fff}#mbody{position:absolute;left:0;top:0;color:#000;overflow:visible}.mbox{background:#fff;border:0;max-height:none}}
+</style></head><body>
+<div class="top"><div class="logo"><i>🤖</i><div><b>Deep<span>Research</span> AI Agent</b><small>Smarter Research. Stronger Insights.</small></div></div>
+<div style="display:flex;gap:12px;align-items:center"><div class="pill"><span class="dot" id="dot"></span><span id="onl">Online</span></div><div class="av">M</div></div></div>
+<div class="app">
+<aside class="side">
+<div class="nav on" data-v="new">＋ New Research</div>
+<div class="nav" data-v="hist">🕘 My Research History</div>
+<div class="nav" data-v="reps">📄 Generated Reports</div>
+<div class="nav" data-v="set">⚙ Settings</div>
+<div class="tips"><b>💡 Quick Tips</b><p>• Use specific and clear topics</p><p>• The agent will search multiple sources</p><p>• Check the workflow steps in real-time</p><p>• Download your report with citations</p></div>
+</aside>
+<main class="main">
+<div class="bar">
+<div class="fld"><span class="lab">&nbsp;</span><input id="q" value="Impact of Artificial Intelligence on Education in 2026" placeholder="Enter your research topic…"></div>
+<div class="fld"><span class="lab">Research Depth</span><select id="depth"><option value="4">Quick (4 sources)</option><option value="8" selected>Standard (8 sources)</option><option value="12">Deep (12 sources)</option></select></div>
+<div class="fld"><span class="lab">Output Format</span><select id="fmt"><option>PDF + Markdown</option><option>Markdown</option><option>PDF</option></select></div>
+<button class="go" id="go">✦ Start Research</button></div>
+
+<div id="v-new"><div class="cols"><div>
+<div class="card"><h3>Research Workflow</h3><div class="sub">Watch the AI agent work through each step of your research task.</div>
+<div class="steps" id="steps"></div>
+<div id="stepBox"><div style="display:flex;justify-content:space-between"><b id="stT">Ready</b><span class="sub" id="stTime"></span></div><div class="sub" id="stD">Enter a topic and press Start Research.</div>
+<div style="display:flex;justify-content:flex-end;font-size:11px;color:var(--mut)" id="cnt"></div><div class="prog"><div id="bar"></div></div></div>
+<div id="srcList"></div></div>
+<div class="card"><h3>Research Report <span class="btns"><button class="btn" id="dPDF">⬇ Download PDF</button><button class="btn" id="dMD">⬇ Download MD</button><button class="btn" id="vFull">👁 View Full Report</button></span></h3><div class="sub">AI-powered research report with citations and source links.</div>
+<div id="repBox"><div class="empty">No report yet. Start a research to generate one.</div></div></div>
+</div><div>
+<div class="card"><h3>⚡ Live Activity Log <span class="badge" id="runB">Idle</span></h3><div class="log" id="log" style="margin-top:12px"><div class="empty">Waiting to start…</div></div></div>
+<div class="card"><h3>🔗 Sources <span class="sub" id="sCnt" style="margin:0">0/0</span></h3><div id="sideSrc" style="margin-top:8px"><div class="empty">No sources yet.</div></div>
+<div class="sub" style="margin:10px 0 0">Sources are found live on the web. Always verify important facts before citing.</div></div>
+<div class="card"><h3>🕘 Research History <button class="btn" data-v="hist">View All</button></h3><div id="histMini" style="margin-top:8px"></div></div>
+</div></div></div>
+
+<div id="v-hist" class="hide card"><h3>My Research History</h3><div id="histAll" style="margin-top:10px"></div><button class="btn" id="clr" style="margin-top:12px">Clear history</button></div>
+<div id="v-reps" class="hide card"><h3>Generated Reports</h3><div id="repsAll" style="margin-top:10px"></div></div>
+<div id="v-set" class="hide card sbox"><h3>Settings</h3><label>Report language</label><select id="lang"><option value="the same language as the topic">Same as topic</option><option>English</option><option>Roman Urdu</option><option>Urdu</option></select></div>
+</main></div>
+<div class="modal" id="modal"><div class="mbox"><div class="mhead"><b id="mT">Report</b><span class="btns"><button class="btn" id="mPDF">⬇ PDF</button><button class="btn" id="mMD">⬇ MD</button><button class="btn" id="mX">✕ Close</button></span></div><div class="mbody" id="mbody"></div></div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NAMES=["Planning","Searching","Reading Sources","Summarizing","Verifying","Writing Report"];
+const COL=["#c0392b","#2980b9","#16a085","#8e44ad","#d35400","#2c3e50","#27ae60","#b03a73"];
+let H=[],cur=null,busy=false,cfg={lang:"the same language as the topic"};
+async function loadHist(){try{H=await (await fetch("/api/history")).json()}catch(e){H=[]}renderHist();if(H[0])renderRep(H[0])}
+const hm=()=>new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+function md(t){return esc(t).replace(/^### (.*)$/gm,"<h4>$1</h4>").replace(/^## (.*)$/gm,"<h3>$1</h3>").replace(/^# (.*)$/gm,"<h2>$1</h2>").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\[(.+?)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener" style="color:#4c8dff">$1</a>').replace(/^[-*] (.*)$/gm,"<li>$1</li>").replace(/(<li>.*<\/li>\n?)+/g,m=>"<ul>"+m+"</ul>").replace(/\n{2,}/g,"<br>")}
+function renderSteps(st){$("#steps").innerHTML=NAMES.map((n,i)=>{const s=st[i]||"pe";return `<div class="step ${s=="ok"?"done":s=="pr"?"run":""}"><div class="n">${i+1}</div>${n}<em>${s=="ok"?"Completed ✓":s=="pr"?"In Progress":"Pending"}</em></div>`}).join("")}
+let ST=[];function setStep(i,s,d){ST[i]=s;renderSteps(ST);if(s=="pr"){$("#stT").textContent=`Step ${i+1}: ${NAMES[i]}`;$("#stD").textContent=d||"";$("#stTime").textContent="Started at "+hm()}}
+function log(m){const l=$("#log");if(l.querySelector(".empty"))l.innerHTML="";l.insertAdjacentHTML("beforeend",`<div><time>${hm()}</time><span>${esc(m)}</span></div>`);l.scrollTop=l.scrollHeight}
+function prog(a,b){$("#bar").style.width=(b?a/b*100:0)+"%";$("#cnt").textContent=b?`${a} / ${b} sources processed`:""}
+function dom(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return u}}
+function renderSrc(S){const row=(s,i,side)=>{const c=s.status=="ok"?["ok","✔ Completed"]:s.status=="pr"?["pr","◔ Processing…"]:["pe","Pending"];
+return `<div class="src" data-i="${i}"><div class="ic" style="background:${COL[i%8]}">${esc((s.site||s.title||"?")[0].toUpperCase())}</div><div class="t"><b>${i+1}. ${esc(s.title)}</b><a href="${esc(s.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(s.url)}</a></div><div class="st ${c[0]}">${c[1]}</div></div>${side?"":`<div class="note" id="n${i}">${esc(s.note||"Not read yet.")}</div>`}`};
+$("#srcList").innerHTML=S.map((s,i)=>row(s,i)).join("");
+$("#sideSrc").innerHTML=S.length?S.slice(0,6).map((s,i)=>row(s,i,1)).join(""):'<div class="empty">No sources yet.</div>';
+$("#sCnt").textContent=S.filter(s=>s.status=="ok").length+"/"+S.length;
+$$("#srcList .src").forEach(e=>e.onclick=()=>$("#n"+e.dataset.i).classList.toggle("open"))}
+function renderRep(r){if(!r){$("#repBox").innerHTML='<div class="empty">No report yet. Start a research to generate one.</div>';return}
+$("#repBox").innerHTML=`<div class="rep"><div class="doc">📄</div><div style="min-width:0"><h4>${esc(r.topic)}</h4><div class="meta">Generated on: ${esc(r.date)} &nbsp;|&nbsp; Sources: ${r.sources} &nbsp;|&nbsp; Word count: ~${r.words}</div><b>Executive Summary</b><p style="margin-top:6px">${esc(r.summary||"Writing…")}</p><button class="btn f" id="vf2">View full report →</button></div></div>`;
+const b=$("#vf2");if(b)b.onclick=()=>openRep(r)}
+function openRep(r){if(!r)return;cur=r;$("#mT").textContent=r.topic;$("#mbody").innerHTML=md(r.md||"");$("#modal").classList.add("open")}
+function dl(r,ext){if(!r)return alert("No report yet.");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([r.md],{type:"text/markdown"}));a.download=r.topic.replace(/[^\w]+/g,"_").slice(0,40)+"."+ext;a.click()}
+function pdf(r){if(!r)return alert("No report yet.");location.href="/api/report/"+r.id+"/pdf"}
+function histRow(h,i){return `<div class="hist" data-i="${i}"><div class="ic">📄</div><div><b style="font-weight:500">${esc(h.topic)}</b><small>${esc(h.date)} • ${h.sources} sources</small></div></div>`}
+function renderHist(){const m=H.length?H.slice(0,3).map(histRow).join(""):'<div class="empty">No research yet.</div>';$("#histMini").innerHTML=m;
+$("#histAll").innerHTML=H.length?H.map(histRow).join(""):'<div class="empty">No research yet.</div>';
+$("#repsAll").innerHTML=H.length?H.map(histRow).join(""):'<div class="empty">No reports yet.</div>';
+$$(".hist").forEach(e=>e.onclick=()=>{const r=H[+e.dataset.i];renderRep(r);openRep(r)})}
+function view(v){["new","hist","reps","set"].forEach(x=>$("#v-"+x).classList.toggle("hide",x!=v));$$(".nav").forEach(n=>n.classList.toggle("on",n.dataset.v==v));$(".bar").classList.toggle("hide",v!="new")}
+$$("[data-v]").forEach(e=>e.onclick=()=>view(e.dataset.v));
+$("#lang").onchange=e=>cfg.lang=e.target.value;
+$("#clr").onclick=async()=>{await fetch("/api/history",{method:"DELETE"});H=[];renderHist();renderRep(null)};
+$("#mX").onclick=()=>$("#modal").classList.remove("open");
+$("#mMD").onclick=()=>dl(cur,"md");$("#mPDF").onclick=()=>pdf(cur);
+$("#dMD").onclick=()=>dl(H[0],"md");$("#dPDF").onclick=()=>pdf(H[0]);$("#vFull").onclick=()=>openRep(H[0]);
+
+function run(){
+ const topic=$("#q").value.trim();if(!topic||busy)return;
+ busy=true;$("#go").disabled=true;$("#runB").textContent="● Running";ST=[];renderSteps(ST);$("#log").innerHTML="";$("#srcList").innerHTML="";prog(0,0);renderRep(null);
+ let S=[];
+ const es=new EventSource("/api/research?topic="+encodeURIComponent(topic)+"&depth="+$("#depth").value+"&lang="+encodeURIComponent(cfg.lang));
+ const end=()=>{es.close();busy=false;$("#go").disabled=false};
+ es.onmessage=m=>{const d=JSON.parse(m.data);
+  if(d.type=="step")setStep(d.i,d.status,d.detail);
+  else if(d.type=="log")log(d.msg);
+  else if(d.type=="sources"){S=d.sources.map(s=>({...s,status:"pe"}));renderSrc(S)}
+  else if(d.type=="source"){Object.assign(S[d.i],{status:d.status,note:d.note||S[d.i].note});renderSrc(S);prog(S.filter(s=>s.status=="ok").length,S.length)}
+  else if(d.type=="done"){H.unshift(d.report);renderHist();renderRep(d.report);$("#stT").textContent="Research complete";$("#stD").textContent="Your report is ready below.";$("#runB").textContent="Done";end()}
+  else if(d.type=="error"){log("Error: "+d.msg);$("#runB").textContent="Error";const i=ST.findIndex(x=>x=="pr");if(i>=0){ST[i]="pe";renderSteps(ST)}end()}};
+ es.onerror=()=>{if(busy){log("Connection lost. Is the server running?");$("#runB").textContent="Error";end()}};
+}
+$("#go").onclick=run;$("#q").onkeydown=e=>{if(e.key=="Enter")run()};
+renderSteps([]);loadHist();
+fetch("/api/health").then(r=>r.json()).then(h=>{if(!h.ok){$("#dot").classList.add("off");$("#onl").textContent="API keys missing"}}).catch(()=>{$("#dot").classList.add("off");$("#onl").textContent="Offline"});
+</script></body></html>
