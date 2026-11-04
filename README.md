@@ -1,66 +1,138 @@
-# DeepResearch AI Agent
+🤖 DeepResearch AI Agent
 
-An AI research assistant with a live dashboard. The backend (FastAPI) and the dashboard (static/index.html) run together from one folder.
-It is completely free to run: it uses the Google Gemini free API and DuckDuckGo search.
+Smarter Research. Stronger Insights.
 
-## Folder structure
+DeepResearch AI Agent is an AI-powered research assistant that automates web research, analyzes multiple sources, verifies information, and generates structured research reports with citations.
 
-deepresearch-agent/
+✨ Features
+
+- AI-powered research using Google Gemini.
+- Free web searching with DuckDuckGo.
+- Automated research planning and source analysis.
+- AI summarization and source verification.
+- Six-stage research workflow with live progress tracking.
+- Real-time activity updates using SSE.
+- Research history stored in SQLite.
+- Download reports in PDF and Markdown formats.
+- Modern dark-themed interactive dashboard.
+
+🛠️ Technologies Used
+
+- Python
+- FastAPI
+- Google Gemini AI
+- DuckDuckGo Search
+- Trafilatura
+- SQLite
+- HTML, CSS, JavaScript
+- Server-Sent Events (SSE)
+- Uvicorn
+
+📸 Screenshots
+
+Dashboard
+
+"Dashboard" (screenshots/dashboard-home.png)
+
+Research Completed
+
+"Research Complete" (screenshots/research-complete.png)
+
+Full Research Report
+
+"Full Report" (screenshots/full-report.png)
+
+Research History
+
+"Research History" (screenshots/research-history.png)
+
+Generated Reports
+
+"Generated Reports" (screenshots/generated-reports.png)
+
+📁 Project Structure
+
+DeepResearch-AI-Agent/
+│
 ├── main.py
 ├── requirements.txt
-├── .env
 ├── README.md
-└── static/
-    └── index.html
+├── .gitignore
+│
+├── static/
+│   └── index.html
+│
+└── screenshots/
+    ├── dashboard-home.png
+    ├── full-report.png
+    ├── generated-reports.png
+    ├── research-complete.png
+    └── research-history.png
 
-## Setup (one time only)
+⚙️ Installation & Setup
 
-1. Install Python 3.10 or newer from python.org.
-2. Open a terminal inside the project folder and run:
+1. Clone the repository
 
-       python -m venv venv
-       venv\Scripts\activate          (Mac/Linux: source venv/bin/activate)
-       pip install -r requirements.txt
+git clone YOUR_GITHUB_REPOSITORY_URL
+cd DeepResearch-AI-Agent
 
-3. Create a file named `.env` in the project folder and add:
+2. Create and activate virtual environment
 
-       GEMINI_API_KEY=your_free_key_here
-       GEMINI_MODEL=gemini-2.5-flash
+python -m venv venv
+venv\Scripts\activate
 
-   Get a free key at https://aistudio.google.com/apikey
-   (sign in with a Google account, no credit card needed).
-   Search needs no key.
+3. Install dependencies
 
-## Run
+pip install -r requirements.txt
 
-       uvicorn main:app --reload
+4. Configure API key
 
-Then open http://localhost:8000 in your browser.
+Create a ".env" file in the project folder:
 
-## How it works
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
 
-1. Planning: Gemini creates 7 search queries.
-2. Searching: DuckDuckGo runs the web searches (free).
-3. Reading: each page is downloaded and cleaned (trafilatura), then Gemini writes notes.
-4. Summarizing: Gemini writes an executive summary.
-5. Verifying: Gemini cross-checks the sources.
-6. Writing: the final report is written with citations.
+Get your free API key: https://aistudio.google.com/apikey
 
-- Live updates: Server-Sent Events (SSE) update the dashboard in real time.
-- History: saved in a local SQLite database (research.db).
-- Downloads: Markdown (from the browser) and PDF (/api/report/ID/pdf).
+5. Run the application
 
-## Troubleshooting
+uvicorn main:app --reload
 
-- "API keys missing": check your .env file, make sure the key is correct, and restart the server.
-- "model not found": open aistudio.google.com, check the current model name, and update GEMINI_MODEL in .env.
-- "Gemini free limit reached": the free plan has a per-minute limit. Wait a minute and try again. Use "Quick (4 sources)" depth.
-- "No search results": DuckDuckGo sometimes rate limits. Wait a minute and try again.
-- PDF export: non-Latin scripts such as Urdu need a custom font. English and Roman Urdu work fine.
+Open in your browser:
 
-## Files
+"http://localhost:8000"
 
-- main.py            backend and agent pipeline
-- static/index.html  the dashboard UI
-- requirements.txt   Python packages
-- .env               your API key (never share it)
+🔄 Research Workflow
+
+1. Planning
+2. Searching
+3. Reading Sources
+4. Summarizing
+5. Verifying
+6. Writing Report
+
+📄 Export Options
+
+- PDF Research Reports
+- Markdown Research Reports
+
+💡 Notes
+
+- Gemini API free-tier quotas and limits apply.
+- DuckDuckGo search requires no API key.
+- Keep your ".env" file private.
+- Research history is stored locally in SQLite.
+
+👩‍💻 Author
+
+Maria Zafar
+
+Computer Science Student | AI & Machine Learning Enthusiast
+
+GitHub: "MariaZafar22" (https://github.com/MariaZafar22)
+
+---
+
+⭐ If you find this project useful, don't forget to give it a star!
+
+Built with Python, FastAPI, and Google Gemini AI.
